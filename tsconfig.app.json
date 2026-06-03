@@ -15,6 +15,7 @@
         "moduleDetection": "force",
         "noEmit": true,
         "jsx": "react",
+        "strict": true,
 
         /* Linting */
         "noUnusedLocals": true,
