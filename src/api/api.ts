@@ -3,11 +3,7 @@ import type { Recipe } from "../types/recipe";
 const BASE_URL = "http://localhost:3000";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
-async function request<TResponse, TBody = undefined>(
-    endpoint: string,
-    method: HttpMethod = "GET",
-    body?: TBody,
-): Promise<TResponse> {
+async function request<TResponse, TBody = undefined>(endpoint: string, method: HttpMethod = "GET", body?: TBody): Promise<TResponse> {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
         method,
         headers: {
@@ -19,9 +15,7 @@ async function request<TResponse, TBody = undefined>(
 
     if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(
-            `HTTP error! status: ${response.status}, message: ${errorText}`,
-        );
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     return response.json();

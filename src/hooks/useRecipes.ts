@@ -23,8 +23,8 @@ export default function useRecipes(): UseRecipesResult {
                 setLoading(true);
                 setError(null);
 
-                await delay(5000);
                 const data = await fetchRecipes();
+                console.log("Fetched recipes:", data);
                 if (!signal.aborted) {
                     setRecipes(data);
                 }

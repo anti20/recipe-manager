@@ -87,6 +87,7 @@ async function createDatabase(): Promise<SqliteDatabase> {
   `);
 
   await ensureRecipeImageColumn(database);
+  await syncSeedImages(database);
   await seedDatabaseIfEmpty(database);
 
   return database;
@@ -103,6 +104,20 @@ async function ensureRecipeImageColumn(database: SqliteDatabase): Promise<void> 
   }
 
   await database.exec("ALTER TABLE recipes ADD COLUMN image TEXT DEFAULT NULL");
+}
+
+async function syncSeedImages(database: SqliteDatabase): Promise<void> {
+  for (const recipe of sampleRecipes) {
+    await database.run(
+      `
+        UPDATE recipes
+        SET image = ?
+        WHERE id = ? AND (image IS NULL OR image = '')
+      `,
+      recipe.image,
+      recipe.id
+    );
+  }
 }
 
 async function seedDatabaseIfEmpty(database: SqliteDatabase): Promise<void> {

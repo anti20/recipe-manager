@@ -5,15 +5,33 @@ export default function RecipesPage() {
     const { recipes, loading, error } = useRecipes();
 
     return (
-        <main>
-            <h1>Recipes</h1>
-            {loading && <p>Loading...</p>}
-            {error && <p>{error.message}</p>}
-            <ul>
-                {recipes?.map((recipe) => (
-                    <li key={recipe.id}>{recipe.title}</li>
-                ))}
-            </ul>
+        <main className="recipes-page">
+            <section className="recipes-section">
+                <header className="recipes-header">
+                    <h1>Recipes</h1>
+                </header>
+
+                {loading && <p>Loading...</p>}
+                {error && <p>{error.message}</p>}
+                <ul className="recipes-grid">
+                    {recipes?.map((recipe) => (
+                        <li key={recipe.id} className="recipe-card">
+                            {recipe.image ? (
+                                <img className="recipe-card__image" src={recipe.image} alt={recipe.title} />
+                            ) : (
+                                <div className="recipe-card__image recipe-card__image--placeholder">🍽 No Image</div>
+                            )}
+
+                            <div className="recipe-card__body">
+                                <h2>{recipe.title}</h2>
+                                <p>
+                                    {recipe.servings} servings · {recipe.cookingTime} min
+                                </p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </section>
         </main>
     );
 }
