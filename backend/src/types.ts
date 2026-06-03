@@ -23,6 +23,7 @@ export interface Ingredient {
 export interface Recipe {
   id: string;
   title: string;
+  image: string | null;
   servings: number;
   cookingTime: number;
   ingredients: Ingredient[];

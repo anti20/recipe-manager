@@ -13,6 +13,7 @@ type SqliteDatabase = Database<sqlite3.Database, sqlite3.Statement>;
 type RecipeRow = {
   id: string;
   title: string;
+  image: string | null;
   servings: number;
   cooking_time: number;
 };
@@ -59,6 +60,7 @@ async function createDatabase(): Promise<SqliteDatabase> {
     CREATE TABLE IF NOT EXISTS recipes (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
+      image TEXT DEFAULT NULL,
       servings INTEGER NOT NULL,
       cooking_time INTEGER NOT NULL
     );
@@ -84,9 +86,23 @@ async function createDatabase(): Promise<SqliteDatabase> {
     );
   `);
 
+  await ensureRecipeImageColumn(database);
   await seedDatabaseIfEmpty(database);
 
   return database;
+}
+
+async function ensureRecipeImageColumn(database: SqliteDatabase): Promise<void> {
+  const columns = await database.all<{ name: string }[]>(
+    "PRAGMA table_info(recipes)"
+  );
+
+  const hasImageColumn = columns.some((column) => column.name === "image");
+  if (hasImageColumn) {
+    return;
+  }
+
+  await database.exec("ALTER TABLE recipes ADD COLUMN image TEXT DEFAULT NULL");
 }
 
 async function seedDatabaseIfEmpty(database: SqliteDatabase): Promise<void> {
@@ -104,11 +120,12 @@ async function seedDatabaseIfEmpty(database: SqliteDatabase): Promise<void> {
     for (const recipe of sampleRecipes) {
       await database.run(
         `
-          INSERT INTO recipes (id, title, servings, cooking_time)
-          VALUES (?, ?, ?, ?)
+          INSERT INTO recipes (id, title, image, servings, cooking_time)
+          VALUES (?, ?, ?, ?, ?)
         `,
         recipe.id,
         recipe.title,
+        recipe.image,
         recipe.servings,
         recipe.cookingTime
       );
@@ -167,7 +184,7 @@ export async function getRecipes(): Promise<Recipe[]> {
 
   const [recipeRows, ingredientRows, instructionRows] = await Promise.all([
     database.all<RecipeRow[]>(`
-      SELECT id, title, servings, cooking_time
+      SELECT id, title, image, servings, cooking_time
       FROM recipes
       ORDER BY title ASC
     `),
@@ -214,6 +231,7 @@ export async function getRecipes(): Promise<Recipe[]> {
   return recipeRows.map((recipe) => ({
     id: recipe.id,
     title: recipe.title,
+    image: recipe.image && recipe.image.length > 0 ? recipe.image : null,
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: ingredientsByRecipeId.get(recipe.id) ?? [],

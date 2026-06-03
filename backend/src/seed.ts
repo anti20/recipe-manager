@@ -4,6 +4,7 @@ export const sampleRecipes: Recipe[] = [
   {
     id: "creamy-garlic-pasta",
     title: "Creamy Garlic Pasta",
+    image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=1200&q=80",
     servings: 4,
     cookingTime: 25,
     ingredients: [
@@ -25,6 +26,7 @@ export const sampleRecipes: Recipe[] = [
   {
     id: "paprika-chicken-traybake",
     title: "Paprika Chicken Traybake",
+    image: "https://images.unsplash.com/photo-1512058454905-c1afe2e4c6c9?auto=format&fit=crop&w=1200&q=80",
     servings: 4,
     cookingTime: 50,
     ingredients: [
@@ -46,6 +48,7 @@ export const sampleRecipes: Recipe[] = [
   {
     id: "tomato-lentil-soup",
     title: "Tomato Lentil Soup",
+    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80",
     servings: 6,
     cookingTime: 35,
     ingredients: [
