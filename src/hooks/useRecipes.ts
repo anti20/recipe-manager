@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchRecipes } from "../api/api";
 import type { Recipe } from "../types/recipe";
-import { toError, delay } from "../utils/helper";
+import { toError } from "../utils/helper";
 
 type UseRecipesResult = {
     recipes: Recipe[] | null;
