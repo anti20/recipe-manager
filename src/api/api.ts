@@ -24,3 +24,7 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
 export function fetchRecipes(): Promise<Recipe[]> {
     return request<Recipe[]>("/recipes");
 }
+
+export function fetchRecipe(recipeId: String): Promise<Recipe> {
+    return request<Recipe>(`/recipes/${recipeId}`);
+}
