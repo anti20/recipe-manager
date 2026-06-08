@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 
-import { getRecipes, initializeDatabase } from "./db.js";
+import { getRecipeById, getRecipes, initializeDatabase } from "./db.js";
 
 const app = express();
 const port = 3000;
@@ -16,6 +16,25 @@ app.get("/recipes", async (_request, response) => {
   } catch (error) {
     response.status(500).json({
       message: "Failed to load recipes."
+    });
+  }
+});
+
+app.get("/recipes/:id", async (request, response) => {
+  try {
+    const recipe = await getRecipeById(request.params.id);
+
+    if (!recipe) {
+      response.status(404).json({
+        message: "Recipe not found"
+      });
+      return;
+    }
+
+    response.json(recipe);
+  } catch (error) {
+    response.status(500).json({
+      message: "Failed to load recipe."
     });
   }
 });

@@ -215,6 +215,73 @@ export async function getRecipes(): Promise<Recipe[]> {
     `)
   ]);
 
+  return buildRecipes(recipeRows, ingredientRows, instructionRows);
+}
+
+export async function getRecipeById(id: string): Promise<Recipe | undefined> {
+  const database = await initializeDatabase();
+
+  const recipeRow =
+    (await database.get<RecipeRow>(
+      `
+        SELECT id, title, image, servings, cooking_time
+        FROM recipes
+        WHERE id = ?
+      `,
+      id
+    )) ?? (await getRecipeByNumericRowId(database, id));
+
+  if (!recipeRow) {
+    return undefined;
+  }
+
+  const [ingredientRows, instructionRows] = await Promise.all([
+    database.all<IngredientRow[]>(
+      `
+        SELECT recipe_id, position, name, quantity, unit
+        FROM ingredients
+        WHERE recipe_id = ?
+        ORDER BY position ASC
+      `,
+      recipeRow.id
+    ),
+    database.all<InstructionRow[]>(
+      `
+        SELECT recipe_id, position, step
+        FROM instruction_steps
+        WHERE recipe_id = ?
+        ORDER BY position ASC
+      `,
+      recipeRow.id
+    )
+  ]);
+
+  return buildRecipes([recipeRow], ingredientRows, instructionRows)[0];
+}
+
+async function getRecipeByNumericRowId(
+  database: SqliteDatabase,
+  id: string
+): Promise<RecipeRow | undefined> {
+  if (!/^[1-9]\d*$/.test(id)) {
+    return undefined;
+  }
+
+  return database.get<RecipeRow>(
+    `
+      SELECT id, title, image, servings, cooking_time
+      FROM recipes
+      WHERE rowid = ?
+    `,
+    Number(id)
+  );
+}
+
+function buildRecipes(
+  recipeRows: RecipeRow[],
+  ingredientRows: IngredientRow[],
+  instructionRows: InstructionRow[]
+): Recipe[] {
   const ingredientsByRecipeId = ingredientRows.reduce<Map<string, Ingredient[]>>(
     (groupedIngredients, ingredient) => {
       const items = groupedIngredients.get(ingredient.recipe_id) ?? [];
