@@ -29,3 +29,7 @@ export interface Recipe {
   ingredients: Ingredient[];
   instructions: string[];
 }
+
+export type RecipeCreateInput = Omit<Recipe, "id" | "image"> & {
+  image: string;
+};

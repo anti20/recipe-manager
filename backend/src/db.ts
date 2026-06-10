@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,7 +7,13 @@ import sqlite3 from "sqlite3";
 import { open, type Database } from "sqlite";
 
 import { sampleRecipes } from "./seed.js";
-import { units, type Ingredient, type Recipe, type Unit } from "./types.js";
+import {
+  units,
+  type Ingredient,
+  type Recipe,
+  type RecipeCreateInput,
+  type Unit
+} from "./types.js";
 
 type SqliteDatabase = Database<sqlite3.Database, sqlite3.Statement>;
 
@@ -257,6 +264,43 @@ export async function getRecipeById(id: string): Promise<Recipe | undefined> {
   ]);
 
   return buildRecipes([recipeRow], ingredientRows, instructionRows)[0];
+}
+
+export async function createRecipe(recipe: RecipeCreateInput): Promise<Recipe> {
+  const database = await initializeDatabase();
+  const recipeId = randomUUID();
+
+  await database.exec("BEGIN");
+
+  try {
+    await database.run(
+      `
+        INSERT INTO recipes (id, title, image, servings, cooking_time)
+        VALUES (?, ?, ?, ?, ?)
+      `,
+      recipeId,
+      recipe.title,
+      recipe.image,
+      recipe.servings,
+      recipe.cookingTime
+    );
+
+    await insertIngredients(database, recipeId, recipe.ingredients);
+    await insertInstructions(database, recipeId, recipe.instructions);
+
+    await database.exec("COMMIT");
+  } catch (error) {
+    await database.exec("ROLLBACK");
+    throw error;
+  }
+
+  const createdRecipe = await getRecipeById(recipeId);
+
+  if (!createdRecipe) {
+    throw new Error("Failed to load created recipe.");
+  }
+
+  return createdRecipe;
 }
 
 async function getRecipeByNumericRowId(
