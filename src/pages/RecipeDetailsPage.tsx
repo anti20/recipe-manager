@@ -15,28 +15,37 @@ export default function RecipeDetailsPage() {
     }
 
     return (
-        <section>
-            {loading && <p>Loading...</p>}
-            {error && <p>{error.message}</p>}
+        <main className="recipe-details-page">
+            <section className="recipe-details-card">
+                {loading && <p>Loading...</p>}
+                {error && <p>{error.message}</p>}
 
-            <h1>{recipe.title}</h1>
-            <img src={recipe.image ?? undefined} alt={recipe.title} />
+                <h1>{recipe.title}</h1>
 
-            <h2>Ingredients</h2>
-            <ul>
-                {recipe.ingredients.map((ingredient) => (
-                    <li key={ingredient.name}>
-                        {ingredient.quantity} {ingredient.unit} {ingredient.name}
-                    </li>
-                ))}
-            </ul>
+                {recipe.image && <img className="recipe-details-card__image" src={recipe.image} alt={recipe.title} />}
 
-            <h2>Instructions</h2>
-            <ol>
-                {recipe.instructions.map((instruction) => (
-                    <li key={instruction}>{instruction}</li>
-                ))}
-            </ol>
-        </section>
+                <div className="recipe-details-card__grid">
+                    <section className="recipe-details-section">
+                        <h2>Ingredients</h2>
+                        <ul className="recipe-details-list">
+                            {recipe.ingredients.map((ingredient) => (
+                                <li key={ingredient.name}>
+                                    {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    <section className="recipe-details-section">
+                        <h2>Instructions</h2>
+                        <ol className="recipe-details-steps">
+                            {recipe.instructions.map((instruction) => (
+                                <li key={instruction}>{instruction}</li>
+                            ))}
+                        </ol>
+                    </section>
+                </div>
+            </section>
+        </main>
     );
 }
