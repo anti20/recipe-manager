@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useRecipes from "../hooks/useRecipes";
 
 export default function RecipesPage() {
-    const { recipes, loading, error } = useRecipes();
+    const { data: recipes, isLoading, error } = useRecipes();
 
     return (
         <main className="recipes-page">
@@ -12,7 +12,7 @@ export default function RecipesPage() {
                     <h1>Recipes</h1>
                 </header>
 
-                {loading && <p>Loading...</p>}
+                {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
 
                 <Link to="/recipes/new" className="create-recipe-link">
