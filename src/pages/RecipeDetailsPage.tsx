@@ -4,7 +4,7 @@ import useRecipe from "../hooks/useRecipe";
 
 export default function RecipeDetailsPage() {
     const { recipeId } = useParams();
-    const { recipe, loading, error } = useRecipe(recipeId ?? "");
+    const { data: recipe, isLoading, error } = useRecipe(recipeId ?? "");
 
     if (!recipeId) {
         return <p>Recipe id is undefined.</p>;
@@ -17,7 +17,7 @@ export default function RecipeDetailsPage() {
     return (
         <main className="recipe-details-page">
             <section className="recipe-details-card">
-                {loading && <p>Loading...</p>}
+                {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
 
                 <h1>{recipe.title}</h1>
