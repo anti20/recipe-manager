@@ -36,6 +36,30 @@ main {
     margin: 0;
 }
 
+.create-recipe-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #6eb28b;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.3);
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease;
+}
+
+.create-recipe-link:hover {
+    transform: translateY(-2px);
+    background: #457058;
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+}
+
 .recipes-grid {
     list-style: none;
     padding: 0;
@@ -46,7 +70,7 @@ main {
 }
 
 .recipe-card {
-    background: #fff;
+    background: #d9e1dd;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
@@ -102,10 +126,10 @@ main {
 
 .recipe-details-card {
     width: min(920px, 100%);
-    background: #fff;
+    background: #d9e1dd;
     border-radius: 24px;
     padding: 24px;
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
 }
 
 .recipe-details-card h1 {
@@ -129,7 +153,7 @@ main {
 }
 
 .recipe-details-section {
-    background: #faf7f2;
+    background: #d9e1dd;
     border-radius: 18px;
     padding: 20px;
 }

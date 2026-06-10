@@ -1,5 +1,6 @@
 import React from "react";
+import RecipeForm from "../components/RecipeForm";
 
 export default function CreateRecipePage() {
-    return <div>Create Recipe Page</div>;
+    return <RecipeForm />;
 }

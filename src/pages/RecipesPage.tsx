@@ -14,6 +14,11 @@ export default function RecipesPage() {
 
                 {loading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
+
+                <Link to="/recipes/new" className="create-recipe-link">
+                    + New recipe
+                </Link>
+
                 <ul className="recipes-grid">
                     {recipes?.map((recipe) => (
                         <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
@@ -21,9 +26,7 @@ export default function RecipesPage() {
                                 {recipe.image ? (
                                     <img className="recipe-card__image" src={recipe.image} alt={recipe.title} />
                                 ) : (
-                                    <div className="recipe-card__image recipe-card__image--placeholder">
-                                        🍽 No Image
-                                    </div>
+                                    <div className="recipe-card__image recipe-card__image--placeholder">🍽 No Image</div>
                                 )}
 
                                 <div className="recipe-card__body">
