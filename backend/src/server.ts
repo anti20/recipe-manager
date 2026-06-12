@@ -5,7 +5,8 @@ import {
   createRecipe,
   getRecipeById,
   getRecipes,
-  initializeDatabase
+  initializeDatabase,
+  updateRecipe
 } from "./db.js";
 import {
   units,
@@ -48,6 +49,34 @@ app.post("/recipes", async (request, response) => {
   } catch (error) {
     response.status(500).json({
       message: "Failed to create recipe."
+    });
+  }
+});
+
+app.put("/recipes/:id", async (request, response) => {
+  const recipe = parseRecipeInput(request.body);
+
+  if (!recipe) {
+    response.status(400).json({
+      message: "Invalid recipe data"
+    });
+    return;
+  }
+
+  try {
+    const updatedRecipe = await updateRecipe(request.params.id, recipe);
+
+    if (!updatedRecipe) {
+      response.status(404).json({
+        message: "Recipe not found"
+      });
+      return;
+    }
+
+    response.status(200).json(updatedRecipe);
+  } catch (error) {
+    response.status(500).json({
+      message: "Failed to update recipe."
     });
   }
 });

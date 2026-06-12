@@ -228,15 +228,7 @@ export async function getRecipes(): Promise<Recipe[]> {
 export async function getRecipeById(id: string): Promise<Recipe | undefined> {
   const database = await initializeDatabase();
 
-  const recipeRow =
-    (await database.get<RecipeRow>(
-      `
-        SELECT id, title, image, servings, cooking_time
-        FROM recipes
-        WHERE id = ?
-      `,
-      id
-    )) ?? (await getRecipeByNumericRowId(database, id));
+  const recipeRow = await getRecipeRowById(database, id);
 
   if (!recipeRow) {
     return undefined;
@@ -301,6 +293,76 @@ export async function createRecipe(recipe: RecipeCreateInput): Promise<Recipe> {
   }
 
   return createdRecipe;
+}
+
+export async function updateRecipe(
+  id: string,
+  recipe: RecipeCreateInput
+): Promise<Recipe | undefined> {
+  const database = await initializeDatabase();
+  const existingRecipe = await getRecipeRowById(database, id);
+
+  if (!existingRecipe) {
+    return undefined;
+  }
+
+  await database.exec("BEGIN");
+
+  try {
+    await database.run(
+      `
+        UPDATE recipes
+        SET title = ?, image = ?, servings = ?, cooking_time = ?
+        WHERE id = ?
+      `,
+      recipe.title,
+      recipe.image,
+      recipe.servings,
+      recipe.cookingTime,
+      existingRecipe.id
+    );
+
+    await database.run(
+      "DELETE FROM ingredients WHERE recipe_id = ?",
+      existingRecipe.id
+    );
+    await database.run(
+      "DELETE FROM instruction_steps WHERE recipe_id = ?",
+      existingRecipe.id
+    );
+
+    await insertIngredients(database, existingRecipe.id, recipe.ingredients);
+    await insertInstructions(database, existingRecipe.id, recipe.instructions);
+
+    await database.exec("COMMIT");
+  } catch (error) {
+    await database.exec("ROLLBACK");
+    throw error;
+  }
+
+  const updatedRecipe = await getRecipeById(existingRecipe.id);
+
+  if (!updatedRecipe) {
+    throw new Error("Failed to load updated recipe.");
+  }
+
+  return updatedRecipe;
+}
+
+async function getRecipeRowById(
+  database: SqliteDatabase,
+  id: string
+): Promise<RecipeRow | undefined> {
+  return (
+    (await database.get<RecipeRow>(
+      `
+        SELECT id, title, image, servings, cooking_time
+        FROM recipes
+        WHERE id = ?
+      `,
+      id
+    )) ?? (await getRecipeByNumericRowId(database, id))
+  );
 }
 
 async function getRecipeByNumericRowId(
