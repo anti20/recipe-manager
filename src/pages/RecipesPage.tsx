@@ -1,12 +1,33 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useRecipes from "../hooks/useRecipes";
 
 export default function RecipesPage() {
     const { data: recipes, isLoading, error } = useRecipes();
 
+    const location = useLocation();
+    const navigationState = location.state as {
+        successMessage?: string;
+    } | null;
+
+    const [successMessage, setSuccessMessage] = React.useState(navigationState?.successMessage ?? null);
+
+    React.useEffect(() => {
+        if (!successMessage) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setSuccessMessage(null);
+        }, 1500);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [successMessage]);
+
     return (
         <main className="recipes-page">
+            {successMessage && <p className="toast toast--success">{successMessage}</p>}
+
             <section className="recipes-section">
                 <header className="recipes-header">
                     <h1>Recipes</h1>

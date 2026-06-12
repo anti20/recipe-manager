@@ -24,7 +24,10 @@ export default function RecipeDetailsPage() {
 
         mutate(recipeId ?? "", {
             onSuccess: () => {
-                navigate("/", { replace: true });
+                navigate("/", {
+                    replace: true,
+                    state: { successMessage: "Recipe deleted successfully." },
+                });
             },
             onError: (error) => {
                 alert(error.message);
