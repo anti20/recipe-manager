@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useRecipe from "../hooks/useRecipe";
 
 export default function RecipeDetailsPage() {
@@ -20,7 +20,13 @@ export default function RecipeDetailsPage() {
                 {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
 
-                <h1>{recipe.title}</h1>
+                <header className="recipe-details-header">
+                    <h1>{recipe.title}</h1>
+
+                    <Link to={`/recipes/${recipe.id}/edit`} className="button button--primary">
+                        Edit
+                    </Link>
+                </header>
 
                 {recipe.image && <img className="recipe-details-card__image" src={recipe.image} alt={recipe.title} />}
 

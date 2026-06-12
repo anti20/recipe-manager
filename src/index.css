@@ -180,6 +180,13 @@ main {
     font-size: clamp(2rem, 4vw, 3rem);
 }
 
+.recipe-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
 .recipe-details-card__image {
     width: 100%;
     aspect-ratio: 16 / 7;
@@ -348,6 +355,11 @@ main {
 
     .recipe-details-page {
         padding: 20px;
+    }
+
+    .recipe-details-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .recipe-details-card {
