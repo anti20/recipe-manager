@@ -30,6 +30,13 @@ export default function RecipeDetailsPage() {
 
                 {recipe.image && <img className="recipe-details-card__image" src={recipe.image} alt={recipe.title} />}
 
+                <div className="recipe-details-header">
+                    <h4>Servings: {recipe.servings} 🍽️</h4>
+                    <h4>
+                        {recipe.cookingTime} {recipe.cookingTime > 1 ? "mins" : "min"}⏲️
+                    </h4>
+                </div>
+
                 <div className="recipe-details-card__grid">
                     <section className="recipe-details-section">
                         <h2>Ingredients</h2>

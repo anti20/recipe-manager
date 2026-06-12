@@ -184,7 +184,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .recipe-details-card__image {
@@ -193,7 +193,6 @@ main {
     object-fit: cover;
     display: block;
     border-radius: 18px;
-    margin-bottom: 24px;
 }
 
 .recipe-details-card__grid {
