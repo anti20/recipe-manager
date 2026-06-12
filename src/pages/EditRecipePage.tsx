@@ -4,14 +4,14 @@ import type { NewRecipe } from "../types/recipe";
 import useCreateRecipe from "../hooks/useCreateRecipe";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateRecipePage() {
+export default function EditRecipePage() {
     const navigate = useNavigate();
     const { mutate } = useCreateRecipe();
 
     function handleSave(recipe: NewRecipe) {
         mutate(recipe, {
-            onSuccess(createdRecipe) {
-                navigate(`/recipes/${createdRecipe.id}`, { replace: true });
+            onSuccess(editedRecipe) {
+                navigate(`/recipes/${editedRecipe.id}`, { replace: true });
             },
         });
     }
@@ -20,7 +20,7 @@ export default function CreateRecipePage() {
         <main className="recipe-form-page">
             <section className="recipe-form-card">
                 <header className="recipe-form-header">
-                    <h1>Create recipe</h1>
+                    <h1>Edit recipe</h1>
                 </header>
 
                 <RecipeForm onSave={handleSave} />

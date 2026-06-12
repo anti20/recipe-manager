@@ -32,3 +32,8 @@ export function fetchRecipe(recipeId: String): Promise<Recipe> {
 export function createRecipe(recipe: NewRecipe): Promise<Recipe> {
     return request<Recipe, NewRecipe>(`/recipes`, "POST", recipe);
 }
+
+export function updateRecipe(recipe: Recipe): Promise<Recipe> {
+    const { id, ...updatedRecipe } = recipe;
+    return request<Recipe, NewRecipe>(`/recipes/${recipe.id}`, "PUT", updatedRecipe);
+}
