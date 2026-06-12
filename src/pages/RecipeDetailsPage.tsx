@@ -4,6 +4,7 @@ import useRecipe from "../hooks/useRecipe";
 import useDeleteRecipe from "../hooks/useDeleteRecipe";
 import { useToast } from "../context/ToastContext";
 import HomeButton from "../components/HomeButton";
+import Loading from "../components/Loading";
 
 export default function RecipeDetailsPage() {
     const navigate = useNavigate();
@@ -12,13 +13,9 @@ export default function RecipeDetailsPage() {
     const { mutate } = useDeleteRecipe();
     const { showToast } = useToast();
 
-    if (!recipeId) {
-        return <p>Recipe id is undefined.</p>;
-    }
-
-    if (!recipe) {
-        return <p>Recipe not found</p>;
-    }
+    if (!recipeId) return <p>Recipe id is undefined.</p>;
+    if (isLoading) return <Loading />;
+    if (!recipe) return <p>Recipe not found</p>;
 
     function deleteRecipe() {
         const shouldDelete = confirm("Are you sure you want to delete this recipe?");
@@ -40,7 +37,6 @@ export default function RecipeDetailsPage() {
         <main className="recipe-details-page">
             <HomeButton />
             <section className="recipe-details-card">
-                {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
 
                 <header className="recipe-details-header">

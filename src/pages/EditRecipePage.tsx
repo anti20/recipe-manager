@@ -5,6 +5,7 @@ import useUpdateRecipe from "../hooks/useUpdateRecipe";
 import useRecipe from "../hooks/useRecipe";
 import { useNavigate, useParams } from "react-router-dom";
 import HomeButton from "../components/HomeButton";
+import Loading from "../components/Loading";
 
 export default function EditRecipePage() {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function EditRecipePage() {
     let content: React.ReactElement;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     } else if (error) {
         content = <p>{error.message}</p>;
     } else {
