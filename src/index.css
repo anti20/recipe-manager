@@ -76,6 +76,17 @@ main {
     background: #fff;
 }
 
+.button--danger {
+    background-color: #dc2626;
+    color: white;
+}
+
+.button--danger:hover {
+    transform: translateY(-2px);
+    background-color: #b91c1c;
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+}
+
 .button--icon {
     width: 44px;
     height: 44px;

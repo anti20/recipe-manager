@@ -14,6 +14,10 @@ export default function RecipeDetailsPage() {
         return <p>Recipe not found</p>;
     }
 
+    function deleteRecipe() {
+        alert(`Delete recipe with ID: ${recipeId}`);
+    }
+
     return (
         <main className="recipe-details-page">
             <section className="recipe-details-card">
@@ -23,9 +27,15 @@ export default function RecipeDetailsPage() {
                 <header className="recipe-details-header">
                     <h1>{recipe.title}</h1>
 
-                    <Link to={`/recipes/${recipe.id}/edit`} className="button button--primary">
-                        Edit
-                    </Link>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                        <Link to={`/recipes/${recipe.id}/edit`} className="button button--primary">
+                            Edit
+                        </Link>
+
+                        <button className="button button--danger" onClick={deleteRecipe}>
+                            Delete
+                        </button>
+                    </div>
                 </header>
 
                 {recipe.image && <img className="recipe-details-card__image" src={recipe.image} alt={recipe.title} />}
