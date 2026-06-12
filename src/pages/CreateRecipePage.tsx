@@ -16,5 +16,15 @@ export default function CreateRecipePage() {
         });
     }
 
-    return <RecipeForm onSave={handleSave} />;
+    return (
+        <main className="create-recipe-page">
+            <section className="create-recipe-card">
+                <header className="create-recipe-header">
+                    <h1>Create recipe</h1>
+                </header>
+
+                <RecipeForm onSave={handleSave} />
+            </section>
+        </main>
+    );
 }

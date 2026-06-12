@@ -23,18 +23,18 @@ export default function IngredientForm({ ingredient, onChange, onRemove }: Ingre
     }
 
     return (
-        <div>
-            <label>
+        <div className="recipe-form__ingredient-row">
+            <label className="recipe-form__field">
                 Name
                 <input type="text" value={ingredient.name} onChange={handleNameChange} />
             </label>
 
-            <label>
+            <label className="recipe-form__field">
                 Quantity
                 <input type="number" value={ingredient.quantity} min={1} onChange={handleQuantityChange} />
             </label>
 
-            <label>
+            <label className="recipe-form__field">
                 Unit
                 <select value={ingredient.unit} onChange={handleUnitChange}>
                     {ingredientUnits.map((unit) => (
@@ -45,7 +45,7 @@ export default function IngredientForm({ ingredient, onChange, onRemove }: Ingre
                 </select>
             </label>
 
-            <button type="button" onClick={onRemove} aria-label="Remove ingredient">
+            <button className="recipe-form__remove-button" type="button" onClick={onRemove} aria-label="Remove ingredient">
                 X
             </button>
         </div>

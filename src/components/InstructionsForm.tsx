@@ -23,23 +23,25 @@ export default function InstructionsForm({ instructions, onChange }: Instraction
     }
 
     return (
-        <fieldset>
+        <fieldset className="recipe-form__fieldset">
             <legend>Instructions</legend>
 
-            {instructions.map((instruction, index) => (
-                <div key={index}>
-                    <label>
-                        {index + 1}
-                        <textarea value={instruction} onChange={(e) => handleChange(e, index)} />
-                    </label>
+            <div className="recipe-form__items">
+                {instructions.map((instruction, index) => (
+                    <div className="recipe-form__instruction-row" key={index}>
+                        <label className="recipe-form__field">
+                            Step {index + 1}
+                            <textarea value={instruction} onChange={(e) => handleChange(e, index)} />
+                        </label>
 
-                    <button type="button" onClick={() => handleRemove(index)} aria-label="Remove ingredient">
-                        X
-                    </button>
-                </div>
-            ))}
+                        <button className="recipe-form__remove-button" type="button" onClick={() => handleRemove(index)} aria-label="Remove instruction">
+                            X
+                        </button>
+                    </div>
+                ))}
+            </div>
 
-            <button type="button" onClick={addInstruction}>
+            <button className="recipe-form__secondary-button" type="button" onClick={addInstruction}>
                 Add instruction
             </button>
         </fieldset>

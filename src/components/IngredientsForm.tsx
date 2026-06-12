@@ -30,19 +30,21 @@ export default function IngredientsForm({ ingredients, onChange }: IngredientsFo
     }
 
     return (
-        <fieldset>
+        <fieldset className="recipe-form__fieldset">
             <legend>Ingredients</legend>
 
-            {ingredients.map((ingredient, index) => (
-                <IngredientForm
-                    key={index}
-                    ingredient={ingredient}
-                    onChange={(ingr) => updateIngredient(index, ingr)}
-                    onRemove={() => removeIngredient(index)}
-                />
-            ))}
+            <div className="recipe-form__items">
+                {ingredients.map((ingredient, index) => (
+                    <IngredientForm
+                        key={index}
+                        ingredient={ingredient}
+                        onChange={(ingr) => updateIngredient(index, ingr)}
+                        onRemove={() => removeIngredient(index)}
+                    />
+                ))}
+            </div>
 
-            <button type="button" onClick={addIngredient}>
+            <button className="recipe-form__secondary-button" type="button" onClick={addIngredient}>
                 Add ingredient
             </button>
         </fieldset>

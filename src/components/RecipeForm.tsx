@@ -29,42 +29,41 @@ export default function RecipeForm({ onSave }: { onSave: (recipe: NewRecipe) => 
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Recipe form</h2>
+        <form className="recipe-form" onSubmit={handleSubmit}>
+            <div className="recipe-form__grid">
+                <label className="recipe-form__field">
+                    Title
+                    <input type="text" value={recipe.title} onChange={(e) => setRecipe({ ...recipe, title: e.target.value })} />
+                </label>
 
-            <label>
-                Title
-                <input type="text" value={recipe.title} onChange={(e) => setRecipe({ ...recipe, title: e.target.value })} />
-            </label>
+                <label className="recipe-form__field">
+                    Image URL
+                    <input type="url" value={recipe.image ?? ""} onChange={(e) => setRecipe({ ...recipe, image: e.target.value })} />
+                </label>
 
-            <label>
-                Image URL
-                <input type="url" value={recipe.image ?? ""} onChange={(e) => setRecipe({ ...recipe, image: e.target.value })} />
-            </label>
+                <label className="recipe-form__field">
+                    Servings
+                    <input type="number" value={recipe.servings} min={1} onChange={(e) => setRecipe({ ...recipe, servings: Number(e.target.value) })} />
+                </label>
 
-            <label>
-                Servings
-                <input type="number" value={recipe.servings} min={1} onChange={(e) => setRecipe({ ...recipe, servings: Number(e.target.value) })} />
-            </label>
-
-            <label>
-                Cooking time
-                <input
-                    type="number"
-                    value={recipe.cookingTime}
-                    min={1}
-                    onChange={(e) => setRecipe({ ...recipe, cookingTime: Number(e.target.value) })}
-                />
-            </label>
+                <label className="recipe-form__field">
+                    Cooking time
+                    <input
+                        type="number"
+                        value={recipe.cookingTime}
+                        min={1}
+                        onChange={(e) => setRecipe({ ...recipe, cookingTime: Number(e.target.value) })}
+                    />
+                </label>
+            </div>
 
             <IngredientsForm ingredients={recipe.ingredients} onChange={updateIngredients} />
 
             <InstructionsForm instructions={recipe.instructions} onChange={updateInstructions} />
 
-            <button type="submit">Save recipe</button>
-
-            <pre>{JSON.stringify(recipe, null, 2)}</pre>
+            <button className="recipe-form__submit" type="submit">
+                Save recipe
+            </button>
         </form>
     );
-    return <form>Recipe form</form>;
 }
