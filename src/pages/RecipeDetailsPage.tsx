@@ -57,7 +57,15 @@ export default function RecipeDetailsPage() {
                     </div>
                 </header>
 
-                {recipe.image && <img className="recipe-details-card__image" src={recipe.image} alt={recipe.title} />}
+                <img
+                    className="recipe-details-card__image"
+                    src={recipe.image || "/recipe-placeholder.jpg"}
+                    alt={recipe.title}
+                    onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = "/recipe-placeholder.jpg";
+                    }}
+                />
 
                 <div className="recipe-details-header">
                     <h4>Servings: {recipe.servings} 🍽️</h4>

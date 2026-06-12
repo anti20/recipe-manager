@@ -23,11 +23,15 @@ export default function RecipesPage() {
                     {recipes?.map((recipe) => (
                         <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
                             <li key={recipe.id} className="recipe-card">
-                                {recipe.image ? (
-                                    <img className="recipe-card__image" src={recipe.image} alt={recipe.title} />
-                                ) : (
-                                    <div className="recipe-card__image recipe-card__image--placeholder">🍽 No Image</div>
-                                )}
+                                <img
+                                    className="recipe-card__image"
+                                    src={recipe.image || "/recipe-placeholder.jpg"}
+                                    alt={recipe.title}
+                                    onError={(event) => {
+                                        event.currentTarget.onerror = null;
+                                        event.currentTarget.src = "/recipe-placeholder.jpg";
+                                    }}
+                                />
 
                                 <div className="recipe-card__body">
                                     <h2>{recipe.title}</h2>

@@ -155,16 +155,6 @@ main {
     display: block;
 }
 
-.recipe-card__image--placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #eee;
-    color: #777;
-    font-weight: 600;
-}
-
 .recipe-card__body {
     padding: 18px;
 }
