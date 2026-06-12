@@ -8,8 +8,6 @@ export type Recipe = {
     instructions: string[];
 };
 
-export type NewRecipe = Omit<Recipe, "id">;
-
 export type Ingredient = {
     name: string;
     quantity: number;

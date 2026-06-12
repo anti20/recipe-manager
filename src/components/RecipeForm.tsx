@@ -1,9 +1,10 @@
 import React from "react";
-import type { Ingredient, NewRecipe } from "../types/recipe";
+import type { Ingredient, Recipe } from "../types/recipe";
 import IngredientsForm from "./IngredientsForm";
 import InstructionsForm from "./InstructionsForm";
 
-const emptyRecipe: NewRecipe = {
+const emptyRecipe: Recipe = {
+    id: null,
     title: "",
     image: "",
     servings: 1,
@@ -12,8 +13,13 @@ const emptyRecipe: NewRecipe = {
     instructions: [],
 };
 
-export default function RecipeForm({ onSave }: { onSave: (recipe: NewRecipe) => void }) {
-    const [recipe, setRecipe] = React.useState<NewRecipe>(emptyRecipe);
+type RecipeFormProps = {
+    recipeToEdit?: Recipe;
+    onSave: (recipe: Recipe) => void;
+};
+
+export default function RecipeForm({ recipeToEdit, onSave }: RecipeFormProps) {
+    const [recipe, setRecipe] = React.useState<Recipe>(recipeToEdit ?? emptyRecipe);
 
     function updateIngredients(ingredients: Ingredient[]) {
         setRecipe({ ...recipe, ingredients: ingredients });
@@ -43,7 +49,12 @@ export default function RecipeForm({ onSave }: { onSave: (recipe: NewRecipe) => 
 
                 <label className="recipe-form__field">
                     Servings
-                    <input type="number" value={recipe.servings} min={1} onChange={(e) => setRecipe({ ...recipe, servings: Number(e.target.value) })} />
+                    <input
+                        type="number"
+                        value={recipe.servings}
+                        min={1}
+                        onChange={(e) => setRecipe({ ...recipe, servings: Number(e.target.value) })}
+                    />
                 </label>
 
                 <label className="recipe-form__field">

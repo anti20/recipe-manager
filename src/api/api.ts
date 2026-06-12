@@ -1,4 +1,4 @@
-import type { Recipe, NewRecipe } from "../types/recipe";
+import type { Recipe } from "../types/recipe";
 
 const BASE_URL = "http://localhost:3000";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
@@ -14,8 +14,8 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
     });
 
     if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
     }
 
     return response.json();
@@ -29,11 +29,10 @@ export function fetchRecipe(recipeId: String): Promise<Recipe> {
     return request<Recipe>(`/recipes/${recipeId}`);
 }
 
-export function createRecipe(recipe: NewRecipe): Promise<Recipe> {
-    return request<Recipe, NewRecipe>(`/recipes`, "POST", recipe);
+export function createRecipe(recipe: Recipe): Promise<Recipe> {
+    return request<Recipe, Recipe>(`/recipes`, "POST", recipe);
 }
 
 export function updateRecipe(recipe: Recipe): Promise<Recipe> {
-    const { id, ...updatedRecipe } = recipe;
-    return request<Recipe, NewRecipe>(`/recipes/${recipe.id}`, "PUT", updatedRecipe);
+    return request<Recipe, Recipe>(`/recipes/${recipe.id}`, "PUT", recipe);
 }
