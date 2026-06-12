@@ -2,12 +2,14 @@ import React from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useRecipe from "../hooks/useRecipe";
 import useDeleteRecipe from "../hooks/useDeleteRecipe";
+import { useToast } from "../context/ToastContext";
 
 export default function RecipeDetailsPage() {
     const navigate = useNavigate();
     const { recipeId } = useParams();
     const { data: recipe, isLoading, error } = useRecipe(recipeId ?? "");
     const { mutate } = useDeleteRecipe();
+    const { showToast } = useToast();
 
     if (!recipeId) {
         return <p>Recipe id is undefined.</p>;
@@ -24,10 +26,8 @@ export default function RecipeDetailsPage() {
 
         mutate(recipeId ?? "", {
             onSuccess: () => {
-                navigate("/", {
-                    replace: true,
-                    state: { successMessage: "Recipe deleted successfully." },
-                });
+                showToast("Recipe deleted successfully.");
+                navigate("/", { replace: true });
             },
             onError: (error) => {
                 alert(error.message);
