@@ -23,7 +23,7 @@ export default function CreateRecipePage() {
                     <h1>Create recipe</h1>
                 </header>
 
-                <RecipeForm onSave={handleSave} />
+                <RecipeForm onSave={handleSave} onCancel={() => navigate(-1)} />
             </section>
         </main>
     );

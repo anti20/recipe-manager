@@ -18,7 +18,7 @@ export default function EditRecipePage() {
     } else if (error) {
         content = <p>{error.message}</p>;
     } else {
-        content = <RecipeForm recipeToEdit={recipe} onSave={handleSave} />;
+        content = <RecipeForm recipeToEdit={recipe} onSave={handleSave} onCancel={() => navigate(-1)} />;
     }
 
     function handleSave(recipe: Recipe) {

@@ -16,9 +16,10 @@ const emptyRecipe: Recipe = {
 type RecipeFormProps = {
     recipeToEdit?: Recipe;
     onSave: (recipe: Recipe) => void;
+    onCancel: () => void;
 };
 
-export default function RecipeForm({ recipeToEdit, onSave }: RecipeFormProps) {
+export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFormProps) {
     const [recipe, setRecipe] = React.useState<Recipe>(recipeToEdit ?? emptyRecipe);
 
     function updateIngredients(ingredients: Ingredient[]) {
@@ -72,9 +73,15 @@ export default function RecipeForm({ recipeToEdit, onSave }: RecipeFormProps) {
 
             <InstructionsForm instructions={recipe.instructions} onChange={updateInstructions} />
 
-            <button className="button button--primary recipe-form__submit" type="submit">
-                Save recipe
-            </button>
+            <div style={{ display: "flex", gap: "8px" }}>
+                <button className="button button--primary recipe-form__submit" type="submit">
+                    Save recipe
+                </button>
+
+                <button className="button button--secondary" type="button" onClick={onCancel}>
+                    Cancel
+                </button>
+            </div>
         </form>
     );
 }
