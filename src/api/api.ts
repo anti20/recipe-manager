@@ -18,6 +18,10 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
         throw new Error(errorResponse.message);
     }
 
+    if (response.status === 204) {
+        return undefined as TResponse;
+    }
+
     return response.json();
 }
 
@@ -25,7 +29,7 @@ export function fetchRecipes(): Promise<Recipe[]> {
     return request<Recipe[]>("/recipes");
 }
 
-export function fetchRecipe(recipeId: String): Promise<Recipe> {
+export function fetchRecipe(recipeId: string): Promise<Recipe> {
     return request<Recipe>(`/recipes/${recipeId}`);
 }
 
@@ -35,4 +39,8 @@ export function createRecipe(recipe: Recipe): Promise<Recipe> {
 
 export function updateRecipe(recipe: Recipe): Promise<Recipe> {
     return request<Recipe, Recipe>(`/recipes/${recipe.id}`, "PUT", recipe);
+}
+
+export function deleteRecipe(recipeId: string): Promise<void> {
+    return request<void>(`/recipes/${recipeId}`, "DELETE");
 }
