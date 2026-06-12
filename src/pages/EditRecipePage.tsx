@@ -23,8 +23,8 @@ export default function EditRecipePage() {
 
     function handleSave(recipe: Recipe) {
         mutate(recipe, {
-            onSuccess(editedRecipe) {
-                navigate(`/recipes/${editedRecipe.id}`, { replace: true });
+            onSuccess() {
+                navigate(-1);
             },
         });
     }
