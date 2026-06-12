@@ -31,6 +31,8 @@ export default function IngredientsForm({ ingredients, onChange }: IngredientsFo
 
     return (
         <fieldset>
+            <legend>Ingredients</legend>
+
             {ingredients.map((ingredient, index) => (
                 <IngredientForm
                     key={index}

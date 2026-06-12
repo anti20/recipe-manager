@@ -1,6 +1,7 @@
 import React from "react";
 import type { Ingredient, NewRecipe } from "../types/recipe";
 import IngredientsForm from "./IngredientsForm";
+import InstructionsForm from "./InstructionsForm";
 
 const emptyRecipe: NewRecipe = {
     title: "",
@@ -11,15 +12,24 @@ const emptyRecipe: NewRecipe = {
     instructions: [],
 };
 
-export default function RecipeForm() {
+export default function RecipeForm({ onSave }: { onSave: (recipe: NewRecipe) => void }) {
     const [recipe, setRecipe] = React.useState<NewRecipe>(emptyRecipe);
 
     function updateIngredients(ingredients: Ingredient[]) {
         setRecipe({ ...recipe, ingredients: ingredients });
     }
 
+    function updateInstructions(instructions: string[]) {
+        setRecipe({ ...recipe, instructions: instructions });
+    }
+
+    function handleSubmit(e: React.SubmitEvent) {
+        e.preventDefault();
+        onSave(recipe);
+    }
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <h2>Recipe form</h2>
 
             <label>
@@ -48,6 +58,10 @@ export default function RecipeForm() {
             </label>
 
             <IngredientsForm ingredients={recipe.ingredients} onChange={updateIngredients} />
+
+            <InstructionsForm instructions={recipe.instructions} onChange={updateInstructions} />
+
+            <button type="submit">Save recipe</button>
 
             <pre>{JSON.stringify(recipe, null, 2)}</pre>
         </form>
