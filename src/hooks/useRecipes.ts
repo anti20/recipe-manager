@@ -5,5 +5,6 @@ export default function useRecipes() {
     return useQuery({
         queryKey: ["recipes"],
         queryFn: fetchRecipes,
+        staleTime: 15000,
     });
 }

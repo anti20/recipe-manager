@@ -1,4 +1,4 @@
-import type { Recipe } from "../types/recipe";
+import type { Recipe, NewRecipe } from "../types/recipe";
 
 const BASE_URL = "http://localhost:3000";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
@@ -27,4 +27,8 @@ export function fetchRecipes(): Promise<Recipe[]> {
 
 export function fetchRecipe(recipeId: String): Promise<Recipe> {
     return request<Recipe>(`/recipes/${recipeId}`);
+}
+
+export function createRecipe(recipe: NewRecipe): Promise<Recipe> {
+    return request<Recipe, NewRecipe>(`/recipes`, "POST", recipe);
 }
