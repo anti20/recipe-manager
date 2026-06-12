@@ -1,7 +1,7 @@
 import React from "react";
 import RecipeForm from "../components/RecipeForm";
 import type { Recipe } from "../types/recipe";
-import useUpdateRecipe from "../hooks/useCreateRecipe";
+import useUpdateRecipe from "../hooks/useUpdateRecipe";
 import useRecipe from "../hooks/useRecipe";
 import { useNavigate, useParams } from "react-router-dom";
 
