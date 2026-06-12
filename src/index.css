@@ -78,6 +78,13 @@ main {
     box-shadow: 0 14px 24px rgba(0, 0, 0, 0.1);
 }
 
+.home-button {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 10;
+}
+
 .button--danger {
     background-color: #dc2626;
     color: white;

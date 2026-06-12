@@ -4,6 +4,7 @@ import type { Recipe } from "../types/recipe";
 import useUpdateRecipe from "../hooks/useUpdateRecipe";
 import useRecipe from "../hooks/useRecipe";
 import { useNavigate, useParams } from "react-router-dom";
+import HomeButton from "../components/HomeButton";
 
 export default function EditRecipePage() {
     const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function EditRecipePage() {
 
     return (
         <main className="recipe-form-page">
+            <HomeButton />
             <section className="recipe-form-card">
                 <header className="recipe-form-header">
                     <h1>Edit recipe</h1>

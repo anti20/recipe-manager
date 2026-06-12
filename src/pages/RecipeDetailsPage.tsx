@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import useRecipe from "../hooks/useRecipe";
 import useDeleteRecipe from "../hooks/useDeleteRecipe";
 import { useToast } from "../context/ToastContext";
+import HomeButton from "../components/HomeButton";
 
 export default function RecipeDetailsPage() {
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ export default function RecipeDetailsPage() {
 
     return (
         <main className="recipe-details-page">
+            <HomeButton />
             <section className="recipe-details-card">
                 {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
@@ -60,7 +62,7 @@ export default function RecipeDetailsPage() {
                 <div className="recipe-details-header">
                     <h4>Servings: {recipe.servings} 🍽️</h4>
                     <h4>
-                        {recipe.cookingTime} {recipe.cookingTime > 1 ? "mins" : "min"}⏲️
+                        {recipe.cookingTime} {recipe.cookingTime > 1 ? "mins" : "min"} ⏲️
                     </h4>
                 </div>
 
