@@ -349,6 +349,19 @@ export async function updateRecipe(
   return updatedRecipe;
 }
 
+export async function deleteRecipe(id: string): Promise<boolean> {
+  const database = await initializeDatabase();
+  const existingRecipe = await getRecipeRowById(database, id);
+
+  if (!existingRecipe) {
+    return false;
+  }
+
+  await database.run("DELETE FROM recipes WHERE id = ?", existingRecipe.id);
+
+  return true;
+}
+
 async function getRecipeRowById(
   database: SqliteDatabase,
   id: string

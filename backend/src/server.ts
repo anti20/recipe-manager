@@ -3,6 +3,7 @@ import express from "express";
 
 import {
   createRecipe,
+  deleteRecipe,
   getRecipeById,
   getRecipes,
   initializeDatabase,
@@ -77,6 +78,25 @@ app.put("/recipes/:id", async (request, response) => {
   } catch (error) {
     response.status(500).json({
       message: "Failed to update recipe."
+    });
+  }
+});
+
+app.delete("/recipes/:id", async (request, response) => {
+  try {
+    const deletedRecipe = await deleteRecipe(request.params.id);
+
+    if (!deletedRecipe) {
+      response.status(404).json({
+        message: "Recipe not found"
+      });
+      return;
+    }
+
+    response.status(204).send();
+  } catch (error) {
+    response.status(500).json({
+      message: "Failed to delete recipe."
     });
   }
 });
