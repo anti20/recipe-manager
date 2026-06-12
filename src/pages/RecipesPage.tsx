@@ -15,7 +15,7 @@ export default function RecipesPage() {
                 {isLoading && <p>Loading...</p>}
                 {error && <p>{error.message}</p>}
 
-                <Link to="/recipes/new" className="create-recipe-link">
+                <Link to="/recipes/new" className="button button--primary recipes-create-button">
                     + New recipe
                 </Link>
 

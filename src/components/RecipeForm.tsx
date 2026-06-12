@@ -61,7 +61,7 @@ export default function RecipeForm({ onSave }: { onSave: (recipe: NewRecipe) => 
 
             <InstructionsForm instructions={recipe.instructions} onChange={updateInstructions} />
 
-            <button className="recipe-form__submit" type="submit">
+            <button className="button button--primary recipe-form__submit" type="submit">
                 Save recipe
             </button>
         </form>

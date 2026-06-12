@@ -45,7 +45,7 @@ export default function IngredientForm({ ingredient, onChange, onRemove }: Ingre
                 </select>
             </label>
 
-            <button className="recipe-form__remove-button" type="button" onClick={onRemove} aria-label="Remove ingredient">
+            <button className="button button--icon" type="button" onClick={onRemove} aria-label="Remove ingredient">
                 X
             </button>
         </div>

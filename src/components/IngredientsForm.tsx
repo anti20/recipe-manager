@@ -44,7 +44,7 @@ export default function IngredientsForm({ ingredients, onChange }: IngredientsFo
                 ))}
             </div>
 
-            <button className="recipe-form__secondary-button" type="button" onClick={addIngredient}>
+            <button className="button button--secondary" type="button" onClick={addIngredient}>
                 Add ingredient
             </button>
         </fieldset>

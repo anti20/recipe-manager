@@ -34,14 +34,14 @@ export default function InstructionsForm({ instructions, onChange }: Instraction
                             <textarea value={instruction} onChange={(e) => handleChange(e, index)} />
                         </label>
 
-                        <button className="recipe-form__remove-button" type="button" onClick={() => handleRemove(index)} aria-label="Remove instruction">
+                        <button className="button button--icon" type="button" onClick={() => handleRemove(index)} aria-label="Remove instruction">
                             X
                         </button>
                     </div>
                 ))}
             </div>
 
-            <button className="recipe-form__secondary-button" type="button" onClick={addInstruction}>
+            <button className="button button--secondary" type="button" onClick={addInstruction}>
                 Add instruction
             </button>
         </fieldset>
