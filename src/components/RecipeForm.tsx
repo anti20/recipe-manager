@@ -21,6 +21,7 @@ type RecipeFormProps = {
 
 export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFormProps) {
     const [recipe, setRecipe] = React.useState<Recipe>(recipeToEdit ?? emptyRecipe);
+    const formRef = React.useRef<HTMLFormElement>(null);
 
     function updateIngredients(ingredients: Ingredient[]) {
         setRecipe({ ...recipe, ingredients: ingredients });
@@ -35,8 +36,22 @@ export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFor
         onSave(recipe);
     }
 
+    React.useEffect(() => {
+        function handleKeyDown(event: KeyboardEvent) {
+            const isSaveShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s";
+            if (!isSaveShortcut) return;
+
+            event.preventDefault();
+            formRef.current?.requestSubmit();
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
     return (
-        <form className="recipe-form" onSubmit={handleSubmit}>
+        <form ref={formRef} className="recipe-form" onSubmit={handleSubmit}>
             <div className="recipe-form__grid">
                 <label className="recipe-form__field">
                     Title
