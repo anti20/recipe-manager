@@ -17,9 +17,13 @@ export default function RecipesPage() {
                     <h1>Recipes</h1>
                 </header>
 
-                <Link to="/recipes/new" className="button button--primary recipes-create-button">
-                    + New recipe
-                </Link>
+                <div style={{ display: "flex", gap: "16px" }}>
+                    <Link to="/recipes/new" className="button button--primary recipes-create-button">
+                        + New recipe
+                    </Link>
+
+                    <input type="search" placeholder="Search recipes" className="recipe-search-input" />
+                </div>
 
                 <ul className="recipes-grid">
                     {recipes?.map((recipe) => (

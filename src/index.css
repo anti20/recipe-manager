@@ -32,6 +32,24 @@ body {
     margin: 0;
 }
 
+.recipe-search-input {
+    flex: 1 1 360px;
+    width: 100%;
+    max-width: 520px;
+    min-width: 280px;
+    height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    color: #457058;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.1);
+    font: inherit;
+    font-weight: 600;
+    line-height: 1;
+    outline: none;
+}
+
 .button {
     display: inline-flex;
     align-items: center;
