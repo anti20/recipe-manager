@@ -14,6 +14,9 @@ export default function CreateRecipePage() {
             onSuccess(createdRecipe) {
                 navigate(`/recipes/${createdRecipe.id}`, { replace: true });
             },
+            onError: (error) => {
+                alert(error.message);
+            },
         });
     }
 

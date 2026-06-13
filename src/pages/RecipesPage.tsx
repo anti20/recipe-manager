@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useRecipes from "../hooks/useRecipes";
 import Loading from "../components/Loading";
+import ErrorView from "../components/ErrorView";
 
 export default function RecipesPage() {
     const { data: recipes, isLoading, error } = useRecipes();
 
     if (isLoading) return <Loading />;
+    if (error) return <ErrorView message={error.message} />;
 
     return (
         <main className="recipes-page">
@@ -14,8 +16,6 @@ export default function RecipesPage() {
                 <header className="recipes-header">
                     <h1>Recipes</h1>
                 </header>
-
-                {error && <p>{error.message}</p>}
 
                 <Link to="/recipes/new" className="button button--primary recipes-create-button">
                     + New recipe
