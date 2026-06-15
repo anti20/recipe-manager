@@ -144,7 +144,8 @@ body {
     margin: 0;
     display: grid;
     gap: 24px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
 }
 
 .recipe-card {
@@ -477,6 +478,7 @@ body {
 
     .recipes-grid {
         gap: 16px;
+        grid-template-columns: 1fr;
     }
 
     .recipe-details-page {

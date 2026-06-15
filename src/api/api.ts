@@ -25,7 +25,16 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
     return response.json();
 }
 
-export function fetchRecipes(): Promise<Recipe[]> {
+export function fetchRecipes(searchText: string = ""): Promise<Recipe[]> {
+    const searchParams = new URLSearchParams();
+    if (searchText.trim()) {
+        searchParams.set("search", searchText.trim());
+    }
+
+    const queryString = searchParams.toString();
+    if (queryString) {
+        return request<Recipe[]>(`/recipes?${queryString}`);
+    }
     return request<Recipe[]>("/recipes");
 }
 

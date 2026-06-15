@@ -5,12 +5,10 @@ import Loading from "../components/Loading";
 import ErrorView from "../components/ErrorView";
 
 export default function RecipesPage() {
-    const { data: recipes, isLoading, error } = useRecipes();
     const [searchText, setSearchText] = React.useState("");
+    const { data: recipes, isLoading, isFetching, error } = useRecipes(searchText);
 
-    const filteredRecipes = recipes?.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()));
-
-    if (isLoading) return <Loading />;
+    if (isLoading && !recipes) return <Loading />;
     if (error) return <ErrorView message={error.message} />;
 
     function handleSearchTextChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -38,10 +36,12 @@ export default function RecipesPage() {
                     />
                 </div>
 
+                {isFetching && <Loading />}
+
                 <ul className="recipes-grid">
-                    {filteredRecipes?.map((recipe) => (
-                        <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
-                            <li key={recipe.id} className="recipe-card">
+                    {recipes?.map((recipe) => (
+                        <li key={recipe.id} className="recipe-card">
+                            <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
                                 <img
                                     className="recipe-card__image"
                                     src={recipe.image || "/recipe-placeholder.jpg"}
@@ -58,8 +58,8 @@ export default function RecipesPage() {
                                         {recipe.servings} servings · {recipe.cookingTime} min
                                     </p>
                                 </div>
-                            </li>
-                        </Link>
+                            </Link>
+                        </li>
                     ))}
                 </ul>
             </section>
