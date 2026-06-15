@@ -35,7 +35,6 @@ export interface RecipeListResult {
   total: number;
   page: number;
   limit: number;
-  totalPages: number;
 }
 
 export type RecipeCreateInput = Omit<Recipe, "id" | "image"> & {

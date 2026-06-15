@@ -266,8 +266,7 @@ export async function getRecipes(
       recipes: [],
       total,
       page,
-      limit,
-      totalPages: total === 0 ? 0 : Math.ceil(total / limit)
+      limit
     };
   }
 
@@ -292,8 +291,7 @@ export async function getRecipes(
     recipes: buildRecipes(recipeRows, ingredientRows, instructionRows),
     total,
     page,
-    limit,
-    totalPages: total === 0 ? 0 : Math.ceil(total / limit)
+    limit
   };
 }
 
