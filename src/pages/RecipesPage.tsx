@@ -6,9 +6,16 @@ import ErrorView from "../components/ErrorView";
 
 export default function RecipesPage() {
     const { data: recipes, isLoading, error } = useRecipes();
+    const [searchText, setSearchText] = React.useState("");
+
+    const filteredRecipes = recipes?.filter((recipe) => recipe.title.toLowerCase().includes(searchText.toLowerCase()));
 
     if (isLoading) return <Loading />;
     if (error) return <ErrorView message={error.message} />;
+
+    function handleSearchTextChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setSearchText(event.target.value);
+    }
 
     return (
         <main className="recipes-page">
@@ -22,11 +29,17 @@ export default function RecipesPage() {
                         + New recipe
                     </Link>
 
-                    <input type="search" placeholder="Search recipes" className="recipe-search-input" />
+                    <input
+                        type="search"
+                        placeholder="Search recipes"
+                        className="recipe-search-input"
+                        value={searchText}
+                        onChange={handleSearchTextChange}
+                    />
                 </div>
 
                 <ul className="recipes-grid">
-                    {recipes?.map((recipe) => (
+                    {filteredRecipes?.map((recipe) => (
                         <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
                             <li key={recipe.id} className="recipe-card">
                                 <img
