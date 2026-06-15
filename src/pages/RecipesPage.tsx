@@ -6,13 +6,19 @@ import ErrorView from "../components/ErrorView";
 
 export default function RecipesPage() {
     const [searchText, setSearchText] = React.useState("");
-    const { data: recipes, isLoading, isFetching, error } = useRecipes(searchText);
+    const [page, setPage] = React.useState(1);
+    const { data, isLoading, isFetching, error } = useRecipes(searchText, page, 20);
+    const recipes = data?.recipes ?? [];
+    const totalPages = data ? Math.ceil(data.total / data.limit) : 0;
+    const isPreviousDisabled = page <= 1;
+    const isNextDisabled = page >= totalPages;
 
-    if (isLoading && !recipes) return <Loading />;
+    if (isLoading && !data) return <Loading />;
     if (error) return <ErrorView message={error.message} />;
 
     function handleSearchTextChange(event: React.ChangeEvent<HTMLInputElement>) {
         setSearchText(event.target.value);
+        setPage(1);
     }
 
     return (
@@ -62,6 +68,32 @@ export default function RecipesPage() {
                         </li>
                     ))}
                 </ul>
+
+                {totalPages > 1 && (
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "1.5rem", gap: "16px" }}>
+                        <button
+                            type="button"
+                            className={`button button--secondary${isPreviousDisabled ? " button--disabled" : ""}`}
+                            disabled={isPreviousDisabled}
+                            onClick={() => setPage((currentPage) => currentPage - 1)}
+                        >
+                            Previous
+                        </button>
+
+                        <span>
+                            Page {page} of {totalPages}
+                        </span>
+
+                        <button
+                            type="button"
+                            className={`button button--secondary${isNextDisabled ? " button--disabled" : ""}`}
+                            disabled={isNextDisabled}
+                            onClick={() => setPage((currentPage) => currentPage + 1)}
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
             </section>
         </main>
     );

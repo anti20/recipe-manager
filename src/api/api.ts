@@ -25,17 +25,14 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
     return response.json();
 }
 
-export function fetchRecipes(searchText: string = ""): Promise<Recipe[]> {
+export function fetchRecipes(searchText: string = "", page: number = 1, limit: number = 20): Promise<RecipesResponse> {
     const searchParams = new URLSearchParams();
     if (searchText.trim()) {
         searchParams.set("search", searchText.trim());
     }
-
-    const queryString = searchParams.toString();
-    if (queryString) {
-        return request<Recipe[]>(`/recipes?${queryString}`);
-    }
-    return request<Recipe[]>("/recipes");
+    searchParams.set("page", page.toString());
+    searchParams.set("limit", limit.toString());
+    return request<RecipesResponse>(`/recipes?${searchParams.toString()}`);
 }
 
 export function fetchRecipe(recipeId: string): Promise<Recipe> {
@@ -53,3 +50,10 @@ export function updateRecipe(recipe: Recipe): Promise<Recipe> {
 export function deleteRecipe(recipeId: string): Promise<void> {
     return request<void>(`/recipes/${recipeId}`, "DELETE");
 }
+
+type RecipesResponse = {
+    recipes: Recipe[];
+    page: number;
+    limit: number;
+    total: number;
+};
