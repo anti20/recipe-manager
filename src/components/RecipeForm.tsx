@@ -3,14 +3,20 @@ import type { Ingredient, Recipe } from "../types/recipe";
 import IngredientsForm from "./IngredientsForm";
 import InstructionsForm from "./InstructionsForm";
 
+const emptyIngredient: Ingredient = {
+    name: "",
+    quantity: 1,
+    unit: "g",
+};
+
 const emptyRecipe: Recipe = {
     id: null,
     title: "",
     image: "",
     servings: 1,
     cookingTime: 10,
-    ingredients: [],
-    instructions: [],
+    ingredients: [emptyIngredient],
+    instructions: [""],
 };
 
 type RecipeFormProps = {
@@ -33,6 +39,7 @@ export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFor
 
     function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
+        alert(JSON.stringify(recipe));
         onSave(recipe);
     }
 
@@ -55,12 +62,12 @@ export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFor
             <div className="recipe-form__grid">
                 <label className="recipe-form__field">
                     Title
-                    <input type="text" value={recipe.title} onChange={(e) => setRecipe({ ...recipe, title: e.target.value })} />
+                    <input type="text" value={recipe.title} required onChange={(e) => setRecipe({ ...recipe, title: e.target.value })} />
                 </label>
 
                 <label className="recipe-form__field">
                     Image URL
-                    <input type="url" value={recipe.image ?? ""} onChange={(e) => setRecipe({ ...recipe, image: e.target.value })} />
+                    <input type="url" value={recipe.image ?? ""} required onChange={(e) => setRecipe({ ...recipe, image: e.target.value })} />
                 </label>
 
                 <label className="recipe-form__field">

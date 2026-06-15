@@ -144,10 +144,6 @@ body {
         0 10px 18px rgba(0, 0, 0, 0.18);
 }
 
-.recipes-create-button {
-    margin-bottom: 24px;
-}
-
 .recipes-grid {
     list-style: none;
     padding: 0;

@@ -28,8 +28,8 @@ export default function RecipesPage() {
                     <h1>Recipes</h1>
                 </header>
 
-                <div style={{ display: "flex", gap: "16px" }}>
-                    <Link to="/recipes/new" className="button button--primary recipes-create-button">
+                <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "24px", marginLeft: "36px" }}>
+                    <Link to="/recipes/new" className="button button--primary">
                         + New recipe
                     </Link>
 
@@ -40,9 +40,23 @@ export default function RecipesPage() {
                         value={searchText}
                         onChange={handleSearchTextChange}
                     />
+
+                    {isFetching && (
+                        <div
+                            style={{
+                                width: "24px",
+                                height: "24px",
+                                borderRadius: "50%",
+                                border: "3px solid rgba(110, 178, 139, 0.18)",
+                                borderTopColor: "#6eb28b",
+                                animation: "loading-spin 0.85s linear infinite",
+                                flexShrink: 0,
+                            }}
+                        />
+                    )}
                 </div>
 
-                {isFetching && <Loading />}
+                {recipes.length === 0 && <ErrorView message="No recipes found" style={{ minHeight: "400px" }} />}
 
                 <ul className="recipes-grid">
                     {recipes?.map((recipe) => (

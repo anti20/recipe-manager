@@ -31,7 +31,7 @@ export default function InstructionsForm({ instructions, onChange }: Instraction
                     <div className="recipe-form__instruction-row" key={index}>
                         <label className="recipe-form__field">
                             Step {index + 1}
-                            <textarea value={instruction} onChange={(e) => handleChange(e, index)} />
+                            <textarea value={instruction} required onChange={(e) => handleChange(e, index)} />
                         </label>
 
                         <button className="button button--icon" type="button" onClick={() => handleRemove(index)} aria-label="Remove instruction">

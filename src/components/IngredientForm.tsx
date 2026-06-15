@@ -26,7 +26,7 @@ export default function IngredientForm({ ingredient, onChange, onRemove }: Ingre
         <div className="recipe-form__ingredient-row">
             <label className="recipe-form__field">
                 Name
-                <input type="text" value={ingredient.name} onChange={handleNameChange} />
+                <input type="text" value={ingredient.name} required onChange={handleNameChange} />
             </label>
 
             <label className="recipe-form__field">
