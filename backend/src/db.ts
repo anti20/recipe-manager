@@ -11,6 +11,7 @@ import {
   units,
   type Ingredient,
   type Recipe,
+  type RecipeListResult,
   type RecipeCreateInput,
   type Unit
 } from "./types.js";
@@ -37,6 +38,10 @@ type InstructionRow = {
   recipe_id: string;
   position: number;
   step: string;
+};
+
+type CountRow = {
+  count: number;
 };
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -201,31 +206,69 @@ async function insertInstructions(
   }
 }
 
-export async function getRecipes(search?: string): Promise<Recipe[]> {
+export async function getRecipes(
+  search: string | undefined,
+  page: number,
+  limit: number
+): Promise<RecipeListResult> {
   const database = await initializeDatabase();
   const normalizedSearch = search?.trim();
   const hasSearch = Boolean(normalizedSearch);
+  const offset = (page - 1) * limit;
+  const searchCondition = "WHERE title LIKE ? COLLATE NOCASE";
+  const searchValue = `%${normalizedSearch}%`;
 
-  const recipeRows = hasSearch
-    ? await database.all<RecipeRow[]>(
-        `
-          SELECT id, title, image, servings, cooking_time
+  const [recipeRows, totalRow] = await Promise.all([
+    hasSearch
+      ? database.all<RecipeRow[]>(
+          `
+            SELECT id, title, image, servings, cooking_time
+            FROM recipes
+            ${searchCondition}
+            ORDER BY title ASC
+            LIMIT ? OFFSET ?
+          `,
+          searchValue,
+          limit,
+          offset
+        )
+      : database.all<RecipeRow[]>(
+          `
+            SELECT id, title, image, servings, cooking_time
+            FROM recipes
+            ORDER BY title ASC
+            LIMIT ? OFFSET ?
+          `,
+          limit,
+          offset
+        ),
+    hasSearch
+      ? database.get<CountRow>(
+          `
+            SELECT COUNT(*) as count
+            FROM recipes
+            ${searchCondition}
+          `,
+          searchValue
+        )
+      : database.get<CountRow>(`
+          SELECT COUNT(*) as count
           FROM recipes
-          WHERE title LIKE ? COLLATE NOCASE
-          ORDER BY title ASC
-        `,
-        `%${normalizedSearch}%`
-      )
-    : await database.all<RecipeRow[]>(`
-        SELECT id, title, image, servings, cooking_time
-        FROM recipes
-        ORDER BY title ASC
-      `);
+        `)
+  ]);
+
+  const total = totalRow?.count ?? 0;
 
   const recipeIds = recipeRows.map((recipe) => recipe.id);
 
   if (recipeIds.length === 0) {
-    return [];
+    return {
+      recipes: [],
+      total,
+      page,
+      limit,
+      totalPages: total === 0 ? 0 : Math.ceil(total / limit)
+    };
   }
 
   const placeholders = recipeIds.map(() => "?").join(", ");
@@ -245,7 +288,13 @@ export async function getRecipes(search?: string): Promise<Recipe[]> {
     `, ...recipeIds)
   ]);
 
-  return buildRecipes(recipeRows, ingredientRows, instructionRows);
+  return {
+    recipes: buildRecipes(recipeRows, ingredientRows, instructionRows),
+    total,
+    page,
+    limit,
+    totalPages: total === 0 ? 0 : Math.ceil(total / limit)
+  };
 }
 
 export async function getRecipeById(id: string): Promise<Recipe | undefined> {

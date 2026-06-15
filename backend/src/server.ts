@@ -29,7 +29,9 @@ app.get("/recipes", async (request, response) => {
       typeof request.query.search === "string"
         ? request.query.search.trim()
         : undefined;
-    const recipes = await getRecipes(search);
+    const page = parsePositiveInteger(request.query.page, 1);
+    const limit = Math.min(parsePositiveInteger(request.query.limit, 10), 50);
+    const recipes = await getRecipes(search, page, limit);
     response.json(recipes);
   } catch (error) {
     response.status(500).json({
@@ -217,6 +219,23 @@ function isNonEmptyString(value: unknown): value is string {
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
+}
+
+function parsePositiveInteger(
+  value: unknown,
+  defaultValue: number
+): number {
+  if (typeof value !== "string") {
+    return defaultValue;
+  }
+
+  const parsedValue = Number.parseInt(value, 10);
+
+  if (!Number.isFinite(parsedValue) || parsedValue < 1) {
+    return defaultValue;
+  }
+
+  return parsedValue;
 }
 
 function isPositiveNumber(value: unknown): value is number {

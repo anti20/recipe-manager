@@ -30,6 +30,14 @@ export interface Recipe {
   instructions: string[];
 }
 
+export interface RecipeListResult {
+  recipes: Recipe[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export type RecipeCreateInput = Omit<Recipe, "id" | "image"> & {
   image: string;
 };
