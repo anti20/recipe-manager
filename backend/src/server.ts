@@ -23,9 +23,13 @@ const allowedUnits = new Set<string>(units);
 app.use(cors());
 app.use(express.json());
 
-app.get("/recipes", async (_request, response) => {
+app.get("/recipes", async (request, response) => {
   try {
-    const recipes = await getRecipes();
+    const search =
+      typeof request.query.search === "string"
+        ? request.query.search.trim()
+        : undefined;
+    const recipes = await getRecipes(search);
     response.json(recipes);
   } catch (error) {
     response.status(500).json({

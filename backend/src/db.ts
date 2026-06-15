@@ -201,25 +201,48 @@ async function insertInstructions(
   }
 }
 
-export async function getRecipes(): Promise<Recipe[]> {
+export async function getRecipes(search?: string): Promise<Recipe[]> {
   const database = await initializeDatabase();
+  const normalizedSearch = search?.trim();
+  const hasSearch = Boolean(normalizedSearch);
 
-  const [recipeRows, ingredientRows, instructionRows] = await Promise.all([
-    database.all<RecipeRow[]>(`
-      SELECT id, title, image, servings, cooking_time
-      FROM recipes
-      ORDER BY title ASC
-    `),
+  const recipeRows = hasSearch
+    ? await database.all<RecipeRow[]>(
+        `
+          SELECT id, title, image, servings, cooking_time
+          FROM recipes
+          WHERE title LIKE ? COLLATE NOCASE
+          ORDER BY title ASC
+        `,
+        `%${normalizedSearch}%`
+      )
+    : await database.all<RecipeRow[]>(`
+        SELECT id, title, image, servings, cooking_time
+        FROM recipes
+        ORDER BY title ASC
+      `);
+
+  const recipeIds = recipeRows.map((recipe) => recipe.id);
+
+  if (recipeIds.length === 0) {
+    return [];
+  }
+
+  const placeholders = recipeIds.map(() => "?").join(", ");
+
+  const [ingredientRows, instructionRows] = await Promise.all([
     database.all<IngredientRow[]>(`
       SELECT recipe_id, position, name, quantity, unit
       FROM ingredients
+      WHERE recipe_id IN (${placeholders})
       ORDER BY recipe_id ASC, position ASC
-    `),
+    `, ...recipeIds),
     database.all<InstructionRow[]>(`
       SELECT recipe_id, position, step
       FROM instruction_steps
+      WHERE recipe_id IN (${placeholders})
       ORDER BY recipe_id ASC, position ASC
-    `)
+    `, ...recipeIds)
   ]);
 
   return buildRecipes(recipeRows, ingredientRows, instructionRows);
