@@ -39,7 +39,6 @@ export default function RecipeForm({ recipeToEdit, onSave, onCancel }: RecipeFor
 
     function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
-        alert(JSON.stringify(recipe));
         onSave(recipe);
     }
 
