@@ -11,3 +11,9 @@
     - Client-side routing with `react-router-dom` for list, details, create, and edit pages.
     - Server-state fetching and mutation with `@tanstack/react-query`.
     - REST API backed by SQLite persistence.
+
+- Screenshots:
+    - Recipe list:
+      ![Recipe list](docs/screenshots/recipes-list.png)
+    - Recipe details:
+      ![Recipe details](docs/screenshots/recipe-details.png)
