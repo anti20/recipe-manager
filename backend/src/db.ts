@@ -13,6 +13,7 @@ import {
   type Recipe,
   type RecipeListResult,
   type RecipeCreateInput,
+  type RecipeSort,
   type Unit
 } from "./types.js";
 
@@ -209,7 +210,8 @@ async function insertInstructions(
 export async function getRecipes(
   search: string | undefined,
   page: number,
-  limit: number
+  limit: number,
+  sort: RecipeSort = "title-asc"
 ): Promise<RecipeListResult> {
   const database = await initializeDatabase();
   const normalizedSearch = search?.trim();
@@ -217,6 +219,7 @@ export async function getRecipes(
   const offset = (page - 1) * limit;
   const searchCondition = "WHERE title LIKE ? COLLATE NOCASE";
   const searchValue = `%${normalizedSearch}%`;
+  const orderByClause = getRecipeListOrderBy(sort);
 
   const [recipeRows, totalRow] = await Promise.all([
     hasSearch
@@ -225,7 +228,7 @@ export async function getRecipes(
             SELECT id, title, image, servings, cooking_time
             FROM recipes
             ${searchCondition}
-            ORDER BY title ASC
+            ORDER BY ${orderByClause}
             LIMIT ? OFFSET ?
           `,
           searchValue,
@@ -236,7 +239,7 @@ export async function getRecipes(
           `
             SELECT id, title, image, servings, cooking_time
             FROM recipes
-            ORDER BY title ASC
+            ORDER BY ${orderByClause}
             LIMIT ? OFFSET ?
           `,
           limit,
@@ -293,6 +296,24 @@ export async function getRecipes(
     page,
     limit
   };
+}
+
+function getRecipeListOrderBy(sort: RecipeSort): string {
+  switch (sort) {
+    case "title-desc":
+      return "title DESC";
+    case "cooking-time-asc":
+      return "cooking_time ASC, title ASC";
+    case "cooking-time-desc":
+      return "cooking_time DESC, title ASC";
+    case "servings-asc":
+      return "servings ASC, title ASC";
+    case "servings-desc":
+      return "servings DESC, title ASC";
+    case "title-asc":
+    default:
+      return "title ASC";
+  }
 }
 
 export async function getRecipeById(id: string): Promise<Recipe | undefined> {

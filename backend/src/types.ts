@@ -37,6 +37,14 @@ export interface RecipeListResult {
   limit: number;
 }
 
+export type RecipeSort =
+  | "title-asc"
+  | "title-desc"
+  | "cooking-time-asc"
+  | "cooking-time-desc"
+  | "servings-asc"
+  | "servings-desc";
+
 export type RecipeCreateInput = Omit<Recipe, "id" | "image"> & {
   image: string;
 };

@@ -13,6 +13,7 @@ import {
   units,
   type Ingredient,
   type RecipeCreateInput,
+  type RecipeSort,
   type Unit
 } from "./types.js";
 
@@ -31,9 +32,10 @@ app.get("/recipes", async (request, response) => {
         : undefined;
     const page = parsePositiveInteger(request.query.page, 1);
     const limit = Math.min(parsePositiveInteger(request.query.limit, 10), 50);
-    const recipes = await getRecipes(search, page, limit);
+    const sort = parseRecipeSort(request.query.sort);
+    const recipes = await getRecipes(search, page, limit, sort);
     response.json(recipes);
-  } catch (error) {
+  } catch {
     response.status(500).json({
       message: "Failed to load recipes."
     });
@@ -53,7 +55,7 @@ app.post("/recipes", async (request, response) => {
   try {
     const createdRecipe = await createRecipe(recipe);
     response.status(201).json(createdRecipe);
-  } catch (error) {
+  } catch {
     response.status(500).json({
       message: "Failed to create recipe."
     });
@@ -81,7 +83,7 @@ app.put("/recipes/:id", async (request, response) => {
     }
 
     response.status(200).json(updatedRecipe);
-  } catch (error) {
+  } catch {
     response.status(500).json({
       message: "Failed to update recipe."
     });
@@ -100,7 +102,7 @@ app.delete("/recipes/:id", async (request, response) => {
     }
 
     response.status(204).send();
-  } catch (error) {
+  } catch {
     response.status(500).json({
       message: "Failed to delete recipe."
     });
@@ -119,7 +121,7 @@ app.get("/recipes/:id", async (request, response) => {
     }
 
     response.json(recipe);
-  } catch (error) {
+  } catch {
     response.status(500).json({
       message: "Failed to load recipe."
     });
@@ -244,6 +246,20 @@ function isPositiveNumber(value: unknown): value is number {
 
 function isAllowedUnit(value: unknown): value is Unit {
   return typeof value === "string" && allowedUnits.has(value);
+}
+
+function parseRecipeSort(value: unknown): RecipeSort {
+  switch (value) {
+    case "title-desc":
+    case "cooking-time-asc":
+    case "cooking-time-desc":
+    case "servings-asc":
+    case "servings-desc":
+    case "title-asc":
+      return value;
+    default:
+      return "title-asc";
+  }
 }
 
 startServer().catch((error) => {
