@@ -15,19 +15,19 @@ This document describes the backend API currently implemented in [backend/src/se
 
 ```json
 {
-  "id": "string",
-  "title": "string",
-  "image": "string | null",
-  "servings": 4,
-  "cookingTime": 30,
-  "ingredients": [
-    {
-      "name": "Flour",
-      "quantity": 250,
-      "unit": "g"
-    }
-  ],
-  "instructions": ["Mix ingredients", "Bake for 25 minutes"]
+    "id": "string",
+    "title": "string",
+    "image": "string | null",
+    "servings": 4,
+    "cookingTime": 30,
+    "ingredients": [
+        {
+            "name": "Flour",
+            "quantity": 250,
+            "unit": "g"
+        }
+    ],
+    "instructions": ["Mix ingredients", "Bake for 25 minutes"]
 }
 ```
 
@@ -37,18 +37,18 @@ This document describes the backend API currently implemented in [backend/src/se
 
 ```json
 {
-  "title": "string",
-  "image": "string",
-  "servings": 4,
-  "cookingTime": 30,
-  "ingredients": [
-    {
-      "name": "Flour",
-      "quantity": 250,
-      "unit": "g"
-    }
-  ],
-  "instructions": ["Mix ingredients", "Bake for 25 minutes"]
+    "title": "string",
+    "image": "string",
+    "servings": 4,
+    "cookingTime": 30,
+    "ingredients": [
+        {
+            "name": "Flour",
+            "quantity": 250,
+            "unit": "g"
+        }
+    ],
+    "instructions": ["Mix ingredients", "Bake for 25 minutes"]
 }
 ```
 
@@ -60,9 +60,9 @@ Validation rules:
 - `cookingTime` must be a positive number.
 - `ingredients` must be a non-empty array.
 - Each ingredient must include:
-  - `name`: non-empty string
-  - `quantity`: finite number
-  - `unit`: one of `g`, `dkg`, `kg`, `ml`, `dl`, `l`, `tsp`, `tbsp`, `piece`, `pinch`, `clove`
+    - `name`: non-empty string
+    - `quantity`: finite number
+    - `unit`: one of `g`, `dkg`, `kg`, `ml`, `dl`, `l`, `tsp`, `tbsp`, `piece`, `pinch`, `clove`
 - `instructions` must be a non-empty array of non-empty strings.
 
 ## Endpoints
@@ -84,8 +84,6 @@ Supported `sort` values:
 - `title-desc`
 - `cooking-time-asc`
 - `cooking-time-desc`
-- `servings-asc`
-- `servings-desc`
 
 If `sort` is missing or invalid, the API falls back to `title-asc`.
 
@@ -93,26 +91,26 @@ Response:
 
 ```json
 {
-  "recipes": [
-    {
-      "id": "recipe-id",
-      "title": "Pancakes",
-      "image": "https://example.com/pancakes.jpg",
-      "servings": 4,
-      "cookingTime": 20,
-      "ingredients": [
+    "recipes": [
         {
-          "name": "Flour",
-          "quantity": 250,
-          "unit": "g"
+            "id": "recipe-id",
+            "title": "Pancakes",
+            "image": "https://example.com/pancakes.jpg",
+            "servings": 4,
+            "cookingTime": 20,
+            "ingredients": [
+                {
+                    "name": "Flour",
+                    "quantity": 250,
+                    "unit": "g"
+                }
+            ],
+            "instructions": ["Mix", "Cook"]
         }
-      ],
-      "instructions": ["Mix", "Cook"]
-    }
-  ],
-  "total": 12,
-  "page": 1,
-  "limit": 10
+    ],
+    "total": 12,
+    "page": 1,
+    "limit": 10
 }
 ```
 
@@ -144,19 +142,19 @@ Response:
 
 ```json
 {
-  "id": "recipe-id",
-  "title": "Pancakes",
-  "image": "https://example.com/pancakes.jpg",
-  "servings": 4,
-  "cookingTime": 20,
-  "ingredients": [
-    {
-      "name": "Flour",
-      "quantity": 250,
-      "unit": "g"
-    }
-  ],
-  "instructions": ["Mix", "Cook"]
+    "id": "recipe-id",
+    "title": "Pancakes",
+    "image": "https://example.com/pancakes.jpg",
+    "servings": 4,
+    "cookingTime": 20,
+    "ingredients": [
+        {
+            "name": "Flour",
+            "quantity": 250,
+            "unit": "g"
+        }
+    ],
+    "instructions": ["Mix", "Cook"]
 }
 ```
 

@@ -1,4 +1,4 @@
-import type { Recipe } from "../types/recipe";
+import type { Recipe, RecipeSortType } from "../types/recipe";
 
 const BASE_URL = "http://localhost:3000";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
@@ -25,13 +25,19 @@ async function request<TResponse, TBody = undefined>(endpoint: string, method: H
     return response.json();
 }
 
-export function fetchRecipes(searchText: string = "", page: number = 1, limit: number = 20): Promise<RecipesResponse> {
+export function fetchRecipes(
+    searchText: string = "",
+    page: number = 1,
+    limit: number = 20,
+    sort: RecipeSortType = "title-asc",
+): Promise<RecipesResponse> {
     const searchParams = new URLSearchParams();
     if (searchText.trim()) {
         searchParams.set("search", searchText.trim());
     }
     searchParams.set("page", page.toString());
     searchParams.set("limit", limit.toString());
+    searchParams.set("sort", sort);
     return request<RecipesResponse>(`/recipes?${searchParams.toString()}`);
 }
 

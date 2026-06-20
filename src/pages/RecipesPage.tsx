@@ -3,11 +3,20 @@ import { Link } from "react-router-dom";
 import useRecipes from "../hooks/useRecipes";
 import Loading from "../components/Loading";
 import ErrorView from "../components/ErrorView";
+import type { RecipeSortType } from "../types/recipe";
+
+const sortOptions = [
+    { value: "title-asc", label: "Title (A-Z)" },
+    { value: "title-desc", label: "Title (Z-A)" },
+    { value: "cooking-time-asc", label: "Cooking time (shortest)" },
+    { value: "cooking-time-desc", label: "Cooking time (longest)" },
+];
 
 export default function RecipesPage() {
     const [searchText, setSearchText] = React.useState("");
     const [page, setPage] = React.useState(1);
-    const { data, isLoading, isFetching, error } = useRecipes(searchText, page, 20);
+    const [sort, setSort] = React.useState<RecipeSortType>("title-asc");
+    const { data, isLoading, isFetching, error } = useRecipes(searchText, page, 20, sort);
     const recipes = data?.recipes ?? [];
     const totalPages = data ? Math.ceil(data.total / data.limit) : 0;
     const isPreviousDisabled = page <= 1;
@@ -18,6 +27,12 @@ export default function RecipesPage() {
 
     function handleSearchTextChange(event: React.ChangeEvent<HTMLInputElement>) {
         setSearchText(event.target.value);
+        setPage(1);
+    }
+
+    function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const sortType = (event.target.value as RecipeSortType) ?? "title-asc";
+        setSort(sortType);
         setPage(1);
     }
 
@@ -40,6 +55,17 @@ export default function RecipesPage() {
                         value={searchText}
                         onChange={handleSearchTextChange}
                     />
+
+                    <label className="recipe-sort-label">
+                        Sort by
+                        <select value={sort} onChange={handleSortChange} className="recipe-sort-select">
+                            {sortOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
 
                     {isFetching && (
                         <div

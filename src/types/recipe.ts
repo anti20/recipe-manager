@@ -26,3 +26,5 @@ export type IngredientUnit =
     | "piece" // piece
     | "pinch" // pinch
     | "clove"; // clove
+
+export type RecipeSortType = "title-asc" | "title-desc" | "cooking-time-asc" | "cooking-time-desc";
