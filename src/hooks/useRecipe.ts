@@ -6,5 +6,6 @@ export default function useRecipe(recipeId: string) {
         queryKey: ["recipe", recipeId],
         queryFn: () => fetchRecipe(recipeId),
         staleTime: 15000,
+        enabled: recipeId !== "",
     });
 }

@@ -16,7 +16,9 @@ export default function EditRecipePage() {
 
     let content: React.ReactElement;
 
-    if (isLoading) {
+    if (!recipeId) {
+        content = <ErrorView message="Recipe id is undefined." />;
+    } else if (isLoading) {
         content = <Loading />;
     } else if (error) {
         content = <ErrorView message={error.message} />;
